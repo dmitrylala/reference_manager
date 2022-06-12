@@ -140,12 +140,12 @@ class CollectionArticle(Reference):
         res_transtextual = f"{self.author} ({int(self.year)}) " \
                            f"{self.article_name} // {self.editor} " \
                            f"(Ред.). {self.collection_name}. {self.city}:" \
-                           f" {self.publishing_house}. С. {self.pages}."
+                           f" {self.publishing_house}. — С. {self.pages}."
         res_subscript = f"{self.author} " \
                         f"{self.article_name} // {self.editor} " \
                         f"(Ред.). {self.collection_name}. {self.city}:" \
-                        f" {self.publishing_house}, {int(self.year)}. " \
-                        f"С. {self.pages}."
+                        f" {self.publishing_house}, {int(self.year)}" \
+                        f". — С. {self.pages}."
 
         if self.ref_type == RefType.Transtextual:
             return res_transtextual
@@ -188,10 +188,10 @@ class JournalArticle(Reference):
     def __str__(self):
         res_transtextual = f"{self.author} ({int(self.year)}) " \
                            f"{self.article_name} // {self.journal_name}." \
-                           f" №{self.journal_number}. С. {self.pages}."
+                           f" №{self.journal_number}. — С. {self.pages}."
         res_subscript = f"{self.author} {self.article_name} // " \
                         f"{self.journal_name}. {int(self.year)}. " \
-                        f"№{self.journal_number}. С. {self.pages}."
+                        f"№{self.journal_number}. — С. {self.pages}."
 
         if self.ref_type == RefType.Transtextual:
             return res_transtextual
@@ -248,7 +248,7 @@ class TextMultivolume(Reference):
         res_transtextual = f"{self.author} ({int(self.year)}) {self.text_name} " \
                            f"// {self.multivolume_author} " \
                            f"{self.multivolume_name} {self.city}: " \
-                           f"{self.publishing_house}. С. {self.pages}. " \
+                           f"{self.publishing_house}. — С. {self.pages}. " \
                            f"Первая публикация: {self.first_publication}."
         res_subscript = "Пока не поддерживается :)"
 
