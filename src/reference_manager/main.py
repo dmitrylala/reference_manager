@@ -11,7 +11,7 @@ REFERENCE_INVITE = "Выберите вид ссылки"
 def main():
     header_styler = FontStyler(Font(
         style="italic",
-        family="Segoe UI",
+        family="Georgia",
         size=50,
         color="#5C3317")
     )
