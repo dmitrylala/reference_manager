@@ -218,7 +218,7 @@ class TextMultivolume(Reference):
             author: str = "Добролюбов Н. А.",
             year: int = 1989,
             text_name: str = "Новый кодекс русской практической мудрости",
-            multivolume_author: str = "Лебедев П. А. (Сост.)",
+            multivolume_author: str = "П. А. Лебедев (Сост.)",
             multivolume_name: str = "Антология педагогической мысли России "
                                     "первой половины XIX в. "
                                     "(до реформ 60-х гг.)",
