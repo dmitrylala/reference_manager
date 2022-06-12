@@ -16,8 +16,7 @@ def get_random_cat():
 
 def get_random_cat_gif():
     while True:
-        response = requests.get(CAT_API, params={"x-api-key": TOKEN})
-        url = response.json()[0]["url"]
+        url = get_random_cat()
         if url.endswith(".gif"):
             return url
 
