@@ -318,7 +318,7 @@ class DigitalArticle(Reference):
         FieldInfo("year", "Введите год публикации статьи", int),
         FieldInfo("article_name", "Введите название статьи", str),
         FieldInfo("resource_name", "Введите название газеты/портала и т.д.", str),
-        FieldInfo("article_number", "Введите номер статьи (опционально)", str),
+        FieldInfo("article_number", "Введите номер статьи (опционально)", int),
         FieldInfo("url", "Введите URL", str),
         FieldInfo("request_date", "Введите дату обращения", str),
     )
@@ -338,7 +338,7 @@ class DigitalArticle(Reference):
             article_name: str = "Доходы экспортеров ушли под "
                                 "контроль правительства",
             resource_name: str = "Газета РБК",
-            article_number: str = "77",
+            article_number: int = 77,
             url: str = "https://www.rbc.ru/newspaper/2022/06/10/"
                        "62a201e69a79478f6aa4c51c",
             request_date: str = "12.06.2022",

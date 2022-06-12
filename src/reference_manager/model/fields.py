@@ -19,9 +19,7 @@ class Validator(ABC):
 
 
 class Number(Validator):
-    def validate(self, value: str):
-        if value == "":
-            return
+    def validate(self, value):
         try:
             int(value)
         except ValueError:
@@ -29,9 +27,9 @@ class Number(Validator):
 
 
 class PositiveNumber(Number):
-    def validate(self, value: str):
+    def validate(self, value):
         super().validate(value)
-        if value != "" and int(value) <= 0:
+        if value <= 0:
             raise ValueError(f"Not a positive number: {value}")
 
 
