@@ -78,14 +78,17 @@ class Monography(Reference):
             setattr(self, field, value)
 
     def __str__(self):
-        editor = f"// {self.editor}" if self.editor else ""
-        translator = f" ; {self.translator}" if self.translator else ""
+        editor = f"{self.editor}" if self.editor else ""
+        translator = f"; пер. {self.translator}" if self.translator else ""
+        backslashes = "//" if editor or translator else ""
 
-        res_transtextual = f"{self.author} ({self.year}) {self.name} {editor} " \
-                           f"{translator}. — {self.city}: {self.publishing_house}. " \
+        res_transtextual = f"{self.author} ({self.year}) {self.name} " \
+                           f"{backslashes} {editor}{translator}. — " \
+                           f"{self.city}: {self.publishing_house}. " \
                            f"— С. {self.pages}."
-        res_subscript = f"{self.author} {self.name} {editor} " \
-                        f"{translator}. — {self.city}: {self.publishing_house}, " \
+        res_subscript = f"{self.author} {self.name} {backslashes} " \
+                        f"{editor}{translator}. — " \
+                        f"{self.city}: {self.publishing_house}, " \
                         f"{self.year}. — С. {self.pages}."
 
         if self.ref_type == RefType.Transtextual:
