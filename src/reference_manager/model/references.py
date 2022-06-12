@@ -93,7 +93,7 @@ class Monography(Reference):
 
         url = ""
         if self.url and self.request_date:
-            url = f"[Электронный ресурс]. URL: {self.url} " \
+            url = f" [Электронный ресурс]. URL: {self.url} " \
                   f"(дата обращения: {self.request_date})"
         pages = f"— С. {self.pages}." if self.pages else ""
 
@@ -200,8 +200,7 @@ class JournalArticle(Reference):
             journal_name: str = "Вопросы национализма",
             journal_number: int = 5,
             pages: str = "135-155",
-            url: str = "https://www.rbc.ru/newspaper/2022/06/10/"
-                       "62a201e69a79478f6aa4c51c",
+            url: str = "https://istina.msu.ru/publications/article/583756/",
             request_date: str = "12.06.2022",
     ):
         self.ref_type = RefType.Transtextual
@@ -212,7 +211,7 @@ class JournalArticle(Reference):
         pages = f"— С. {self.pages}." if self.pages else ""
         url = ""
         if self.url and self.request_date:
-            url = f"[Электронный ресурс]. URL: {self.url} " \
+            url = f" [Электронный ресурс]. URL: {self.url} " \
                   f"(дата обращения: {self.request_date})"
         res_transtextual = f"{self.author} ({int(self.year)}) " \
                            f"{self.article_name} // {self.journal_name}." \
