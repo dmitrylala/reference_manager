@@ -79,7 +79,8 @@ class Monography(Reference):
 
     def __str__(self):
         editor = f"{self.editor}" if self.editor else ""
-        translator = f"; пер. {self.translator}" if self.translator else ""
+        semicolon = "; " if editor else ""
+        translator = f"{semicolon}пер. {self.translator}" if self.translator else ""
         backslashes = "// " if editor or translator else ""
 
         res_transtextual = f"{self.author} ({self.year}) {self.name} " \
