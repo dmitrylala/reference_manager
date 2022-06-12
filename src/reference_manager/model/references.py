@@ -47,7 +47,8 @@ class Monography(Reference):
         FieldInfo("year", "Введите год", int),
         FieldInfo("name", "Введите название", str),
         FieldInfo("city", "Введите город", str),
-        FieldInfo("publishing_house", "Введите издательство", str)
+        FieldInfo("publishing_house", "Введите издательство", str),
+        FieldInfo("pages", "Введите количество страниц/номер страниц (-ы)", str)
     )
 
     author = Text()
@@ -55,6 +56,7 @@ class Monography(Reference):
     name = Text()
     city = Text()
     publishing_house = Text()
+    pages = Pages()
 
     def __init__(
             self,
@@ -70,9 +72,11 @@ class Monography(Reference):
 
     def __str__(self):
         res_transtextual = f"{self.author} ({self.year}) {self.name} " \
-                           f"{self.city}: {self.publishing_house}."
+                           f"{self.city}: {self.publishing_house}. " \
+                           f"— {self.pages}."
         res_subscript = f"{self.author} {self.name} " \
-                        f"{self.city}: {self.publishing_house}, {self.year}."
+                        f"{self.city}: {self.publishing_house}, " \
+                        f"{self.year}. — {self.pages}."
 
         if self.ref_type == RefType.Transtextual:
             return res_transtextual
@@ -90,7 +94,7 @@ class CollectionArticle(Reference):
         FieldInfo("collection_name", "Введите название сборника", str),
         FieldInfo("city", "Введите город", str),
         FieldInfo("publishing_house", "Введите издательство", str),
-        FieldInfo("pages", "Введите диапазон страниц (через тире)", str)
+        FieldInfo("pages", "Введите диапазон страниц (через тире)", str),
     )
 
     author = Text()
@@ -107,7 +111,7 @@ class CollectionArticle(Reference):
             author: str = "Дмитриев Т. А.",
             year: int = 2009,
             article_name: str = "Антонио Грамши",
-            editor: str = "Куренной В. А.",
+            editor: str = "В. А. Куренной",
             collection_name: str = "История и теория "
                                    "интеллигенции и интеллектуалов",
             city: str = "Москва",
@@ -143,7 +147,7 @@ class JournalArticle(Reference):
         FieldInfo("article_name", "Введите название статьи", str),
         FieldInfo("journal_name", "Введите название журнала", str),
         FieldInfo("journal_number", "Введите номер журнала", int),
-        FieldInfo("pages", "Введите диапазон страниц (через тире)", str)
+        FieldInfo("pages", "Введите диапазон страниц (через тире)", str),
     )
 
     author = Text()
@@ -195,7 +199,7 @@ class TextMultivolume(Reference):
         FieldInfo("publishing_house", "Введите издательство", str),
         FieldInfo("pages", "Введите диапазон страниц (через тире)", str),
         FieldInfo("first_publication", "Введите информацию о первой "
-                                       "публикации", str)
+                                       "публикации", str),
     )
 
     author = Text()
@@ -246,7 +250,7 @@ class DigitalLegalAct(Reference):
         FieldInfo("name", "Введите название", str),
         FieldInfo("url", "Введите URL", str),
         FieldInfo("article", "Введите статью", str),
-        FieldInfo("request_date", "Введите дату обращения", str)
+        FieldInfo("request_date", "Введите дату обращения", str),
     )
 
     name = Text()
@@ -281,7 +285,7 @@ class ReferenceCreator:
         CollectionArticle,
         JournalArticle,
         TextMultivolume,
-        DigitalLegalAct
+        DigitalLegalAct,
     )
     ref_names = tuple(ref.cls_rus for ref in ref_classes)
     references = dict(zip(ref_names, ref_classes))
