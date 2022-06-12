@@ -48,7 +48,7 @@ class Monography(Reference):
         FieldInfo("name", "Введите название", str),
         FieldInfo("city", "Введите город", str),
         FieldInfo("publishing_house", "Введите издательство", str),
-        FieldInfo("pages", "Введите количество страниц/номер страниц (-ы)", str)
+        FieldInfo("pages", "Введите количество страниц/номер страниц (-ы)", str),
     )
 
     author = Text()
@@ -64,7 +64,8 @@ class Monography(Reference):
             year: int = 2010,
             name: str = "Die Politische Differenz.",
             city: str = "Berlin",
-            publishing_house: str = "Suhrkamp Verlag"
+            publishing_house: str = "Suhrkamp Verlag",
+            pages: str = "141",
     ):
         self.ref_type = RefType.Transtextual
         for field, value in filter(lambda x: x[0] != 'self', locals().items()):
@@ -73,10 +74,10 @@ class Monography(Reference):
     def __str__(self):
         res_transtextual = f"{self.author} ({self.year}) {self.name} " \
                            f"{self.city}: {self.publishing_house}. " \
-                           f"— {self.pages}."
+                           f"— С. {self.pages}."
         res_subscript = f"{self.author} {self.name} " \
                         f"{self.city}: {self.publishing_house}, " \
-                        f"{self.year}. — {self.pages}."
+                        f"{self.year}. — С. {self.pages}."
 
         if self.ref_type == RefType.Transtextual:
             return res_transtextual
@@ -116,7 +117,7 @@ class CollectionArticle(Reference):
                                    "интеллигенции и интеллектуалов",
             city: str = "Москва",
             publishing_house: str = "Наследие Евразии",
-            pages: str = "207-228"
+            pages: str = "207-228",
     ):
         self.ref_type = RefType.Transtextual
         for field, value in filter(lambda x: x[0] != 'self', locals().items()):
@@ -165,7 +166,7 @@ class JournalArticle(Reference):
                                 "поиски национальной идентичности",
             journal_name: str = "Вопросы национализма",
             journal_number: int = 5,
-            pages: str = "135-155"
+            pages: str = "135-155",
     ):
         self.ref_type = RefType.Transtextual
         for field, value in filter(lambda x: x[0] != 'self', locals().items()):
@@ -224,7 +225,7 @@ class TextMultivolume(Reference):
             city: str = "Москва",
             publishing_house: str = "Педагогика",
             pages: str = "486-498",
-            first_publication: str = "Современник. 1859. № 6"
+            first_publication: str = "Современник. 1859. № 6",
     ):
         self.ref_type = RefType.Transtextual
         for field, value in filter(lambda x: x[0] != 'self', locals().items()):
@@ -266,7 +267,7 @@ class DigitalLegalAct(Reference):
                        "-sovety/detskie-posobija/posobie-po-beremennosti-i-"
                        "rodam/",
             article: str = "ч. 5 ст. 123",
-            request_date: str = "27.03.2019"
+            request_date: str = "27.03.2019",
     ):
         for field, value in filter(lambda x: x[0] != 'self', locals().items()):
             setattr(self, field, value)
@@ -299,7 +300,7 @@ class ReferenceCreator:
             self,
             ref_type: str,
             text_handler: Callable, number_handler: Callable,
-            ref_styler=None
+            ref_styler=None,
     ):
         self.text_handler = text_handler
         self.number_handler = number_handler
