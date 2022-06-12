@@ -302,12 +302,11 @@ class DigitalLegalAct(Reference):
 
     def __init__(
             self,
-            name: str = "Справочная информация «Пособие по беременности и родам"
-                        " в 2019 г.»",
-            url: str = "http://www.consultant.ru/law/ref/poleznye"
-                       "-sovety/detskie-posobija/posobie-po-beremennosti-i-"
-                       "rodam/",
-            article: str = "ч. 5 ст. 123",
+            name: str = "Федеральный закон «О воинской обязанности и "
+                        "военной службе» от 28.03.1998 N 53-ФЗ",
+            url: str = "http://www.consultant.ru/document/cons_doc_LAW_18260/"
+                       "fbe9593051ae34e2a8eb27f73b923ffee40296b7/",
+            article: str = "ч. 1 ст. 24",
             request_date: str = "27.03.2019",
     ):
         for field, value in filter(lambda x: x[0] != 'self', locals().items()):
