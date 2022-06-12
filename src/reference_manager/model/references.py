@@ -51,6 +51,8 @@ class Monography(Reference):
         FieldInfo("city", "Введите город", str),
         FieldInfo("publishing_house", "Введите издательство", str),
         FieldInfo("pages", "Введите количество страниц/номер страниц (-ы)", str),
+        FieldInfo("url", "Введите URL", str),
+        FieldInfo("request_date", "Введите дату обращения", str),
     )
 
     author = Text()
@@ -61,6 +63,8 @@ class Monography(Reference):
     city = Text()
     publishing_house = Text()
     pages = Pages()
+    url = Text()
+    request_date = Text()
 
     def __init__(
             self,
@@ -72,6 +76,9 @@ class Monography(Reference):
             city: str = "М.",
             publishing_house: str = "Стрингер",
             pages: str = "116",
+            url: str = "http://www.philosophy.ru/library/bahtin/"
+                       "rable.html#_ftn1",
+            request_date: str = "05.10.2008",
     ):
         self.ref_type = RefType.Transtextual
         for field, value in filter(lambda x: x[0] != 'self', locals().items()):
@@ -83,14 +90,20 @@ class Monography(Reference):
         translator = f"{semicolon}пер. {self.translator}" if self.translator else ""
         backslashes = " // " if editor or translator else ""
 
+        url = ""
+        if self.url and self.request_date:
+            url = f"[Электронный ресурс]. URL: {self.url} " \
+                  f"(дата обращения: {self.request_date})"
+        pages = f"— С. {self.pages}." if self.pages else ""
+
         res_transtextual = f"{self.author} ({int(self.year)}) {self.name}" \
                            f"{backslashes}{editor}{translator}. — " \
                            f"{self.city}: {self.publishing_house}. " \
-                           f"— С. {self.pages}."
+                           f"{pages}{url}"
         res_subscript = f"{self.author} {self.name}{backslashes}" \
                         f"{editor}{translator}. — " \
                         f"{self.city}: {self.publishing_house}, " \
-                        f"{int(self.year)}. — С. {self.pages}."
+                        f"{int(self.year)}. {pages}{url}"
 
         if self.ref_type == RefType.Transtextual:
             return res_transtextual
