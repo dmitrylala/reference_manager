@@ -1,31 +1,29 @@
 import streamlit as st
 
-from font_styler import FontStyler, Font
-from model.references import ReferenceCreator
+from model import ReferenceCreator
+from utils import FontStyler, Font
+
 
 HEADER = "Reference Manager"
 REFERENCE_TYPE_INVITE = "Выберите тип ссылки"
 REFERENCE_INVITE = "Выберите вид ссылки"
 
+HEADER_STYLER = FontStyler(Font(
+    style="italic",
+    family="Georgia",
+    size=50,
+    color="#5C3317")
+)
+REFERENCE_STYLER = FontStyler(Font(size=20, color="black"))
+
 
 def main():
-    header_styler = FontStyler(Font(
-        style="italic",
-        family="Georgia",
-        size=50,
-        color="#5C3317")
-    )
-    reference_styler = FontStyler(Font(size=20, color="black"))
-
-    st.markdown(
-        header_styler.apply(HEADER),
-        unsafe_allow_html=True
-    )
+    st.markdown(HEADER_STYLER.apply(HEADER), unsafe_allow_html=True)
+    st.sidebar.markdown(f"# {HEADER} 🎈")
 
     ref_type = st.selectbox(
         REFERENCE_TYPE_INVITE,
-        ReferenceCreator.reference_types,
-        format_func=str.strip
+        ReferenceCreator.reference_types
     )
 
     creator = ReferenceCreator(
@@ -33,7 +31,7 @@ def main():
         text_handler=st.text_input,
         number_handler=st.number_input,
         date_handler=st.date_input,
-        ref_styler=reference_styler
+        ref_styler=REFERENCE_STYLER
     )
 
     option = st.selectbox(REFERENCE_INVITE, creator.ref_names)
@@ -48,5 +46,5 @@ def main():
         st.error(e)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
