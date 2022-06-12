@@ -46,13 +46,14 @@ class Monography(Reference):
         FieldInfo("author", "Введите автора (-ов)", str),
         FieldInfo("year", "Введите год", int),
         FieldInfo("name", "Введите название", str),
-        FieldInfo("editor", "Введите редактора (-ов)", str),
-        FieldInfo("translator", "Введите переводчика (-ов)", str),
+        FieldInfo("editor", "Введите редактора (-ов) (опционально)", str),
+        FieldInfo("translator", "Введите переводчика (-ов) (опционально)", str),
         FieldInfo("city", "Введите город", str),
         FieldInfo("publishing_house", "Введите издательство", str),
-        FieldInfo("pages", "Введите количество страниц/номер страниц (-ы)", str),
-        FieldInfo("url", "Введите URL", str),
-        FieldInfo("request_date", "Введите дату обращения", str),
+        FieldInfo("pages", "Введите количество страниц/номер страниц (-ы) (опционально)", str),
+        FieldInfo("url", "Введите URL (опционально - отображается только "
+                         "если еще введена дата обращения)", str),
+        FieldInfo("request_date", "Введите дату обращения (опционально)", str),
     )
 
     author = Text()
@@ -64,7 +65,7 @@ class Monography(Reference):
     publishing_house = Text()
     pages = Pages()
     url = Text()
-    request_date = Text()
+    request_date = Date()
 
     def __init__(
             self,
@@ -121,7 +122,7 @@ class CollectionArticle(Reference):
         FieldInfo("collection_name", "Введите название сборника", str),
         FieldInfo("city", "Введите город", str),
         FieldInfo("publishing_house", "Введите издательство", str),
-        FieldInfo("pages", "Введите диапазон страниц (через тире)", str),
+        FieldInfo("pages", "Введите диапазон страниц (через тире) (опционально)", str),
     )
 
     author = Text()
@@ -175,7 +176,7 @@ class JournalArticle(Reference):
         FieldInfo("article_name", "Введите название статьи", str),
         FieldInfo("journal_name", "Введите название журнала", str),
         FieldInfo("journal_number", "Введите номер журнала", int),
-        FieldInfo("pages", "Введите диапазон страниц (через тире)", str),
+        FieldInfo("pages", "Введите диапазон страниц (через тире) (опционально)", str),
     )
 
     author = Text()
@@ -226,7 +227,7 @@ class TextMultivolume(Reference):
                                       "издания", str),
         FieldInfo("city", "Введите город", str),
         FieldInfo("publishing_house", "Введите издательство", str),
-        FieldInfo("pages", "Введите диапазон страниц (через тире)", str),
+        FieldInfo("pages", "Введите диапазон страниц (через тире) (опционально)", str),
         FieldInfo("first_publication", "Введите информацию о первой "
                                        "публикации", str),
     )
@@ -309,6 +310,58 @@ class DigitalLegalAct(Reference):
         return res
 
 
+class DigitalArticle(Reference):
+    cls_rus = "Online-статья"
+
+    fields = (
+        FieldInfo("author", "Введите автора (-ов)", str),
+        FieldInfo("year", "Введите год публикации статьи", int),
+        FieldInfo("article_name", "Введите название статьи", str),
+        FieldInfo("resource_name", "Введите название газеты/портала и т.д.", str),
+        FieldInfo("article_number", "Введите номер статьи (опционально)", int),
+        FieldInfo("url", "Введите URL", str),
+        FieldInfo("request_date", "Введите дату обращения", str),
+    )
+
+    author = Text()
+    year = PositiveNumber()
+    article_name = Text()
+    resource_name = Text()
+    article_number = PositiveNumber()
+    url = Text()
+    request_date = Date()
+
+    def __init__(
+            self,
+            author: str = "Инна Деготькова, Маргарита Мордовина.",
+            year: int = 2021,
+            article_name: str = "Доходы экспортеров ушли под "
+                                "контроль правительства",
+            resource_name: str = "Газета РБК",
+            article_number: int = 77,
+            url: str = "https://www.rbc.ru/newspaper/2022/06/10/"
+                       "62a201e69a79478f6aa4c51c",
+            request_date: str = "12.06.2022",
+    ):
+        self.ref_type = RefType.Transtextual
+        for field, value in filter(lambda x: x[0] != 'self', locals().items()):
+            setattr(self, field, value)
+
+    def __str__(self):
+        article_num = f" № {self.article_number}." if self.article_number else ""
+        res_transtextual = f"{self.author} ({int(self.year)}) " \
+                           f"{self.article_name} " \
+                           f"// {self.resource_name}.{article_num} " \
+                           f"URL: {self.url} (дата обращения: {self.request_date})"
+        res_subscript = f"{self.author}. {self.article_name} " \
+                        f"// {self.resource_name}. {int(self.year)}.{article_num} " \
+                        f"URL: {self.url} (дата обращения: {self.request_date})"
+
+        if self.ref_type == RefType.Transtextual:
+            return res_transtextual
+        return res_subscript
+
+
 class ReferenceCreator:
     ref_classes = (
         Monography,
@@ -316,6 +369,7 @@ class ReferenceCreator:
         JournalArticle,
         TextMultivolume,
         DigitalLegalAct,
+        DigitalArticle,
     )
     ref_names = tuple(ref.cls_rus for ref in ref_classes)
     references = dict(zip(ref_names, ref_classes))
