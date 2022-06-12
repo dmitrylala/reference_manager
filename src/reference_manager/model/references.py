@@ -46,6 +46,8 @@ class Monography(Reference):
         FieldInfo("author", "Введите автора (-ов)", str),
         FieldInfo("year", "Введите год", int),
         FieldInfo("name", "Введите название", str),
+        FieldInfo("editor", "Введите редактора (-ов)", str),
+        FieldInfo("translator", "Введите переводчика (-ов)", str),
         FieldInfo("city", "Введите город", str),
         FieldInfo("publishing_house", "Введите издательство", str),
         FieldInfo("pages", "Введите количество страниц/номер страниц (-ы)", str),
@@ -54,29 +56,36 @@ class Monography(Reference):
     author = Text()
     year = Year()
     name = Text()
+    editor = Text()
+    translator = Text()
     city = Text()
     publishing_house = Text()
     pages = Pages()
 
     def __init__(
             self,
-            author: str = "Marchart O.",
-            year: int = 2010,
-            name: str = "Die Politische Differenz.",
-            city: str = "Berlin",
-            publishing_house: str = "Suhrkamp Verlag",
-            pages: str = "141",
+            author: str = "Корнелиус Х.",
+            year: int = 1992,
+            name: str = "Выиграть может каждый: Как разрешать конфликты",
+            editor: str = "Х. Корнелиус, З. Фэйр",
+            translator: str = "П. Е. Патрушева",
+            city: str = "М.",
+            publishing_house: str = "Стрингер",
+            pages: str = "116",
     ):
         self.ref_type = RefType.Transtextual
         for field, value in filter(lambda x: x[0] != 'self', locals().items()):
             setattr(self, field, value)
 
     def __str__(self):
-        res_transtextual = f"{self.author} ({self.year}) {self.name} " \
-                           f"{self.city}: {self.publishing_house}. " \
+        editor = f"// {self.editor}" if self.editor else ""
+        translator = f" ; {self.translator}" if self.translator else ""
+
+        res_transtextual = f"{self.author} ({self.year}) {self.name} {editor} " \
+                           f"{translator}. — {self.city}: {self.publishing_house}. " \
                            f"— С. {self.pages}."
-        res_subscript = f"{self.author} {self.name} " \
-                        f"{self.city}: {self.publishing_house}, " \
+        res_subscript = f"{self.author} {self.name} {editor} " \
+                        f"{translator}. — {self.city}: {self.publishing_house}, " \
                         f"{self.year}. — С. {self.pages}."
 
         if self.ref_type == RefType.Transtextual:
