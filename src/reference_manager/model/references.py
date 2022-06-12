@@ -80,13 +80,13 @@ class Monography(Reference):
     def __str__(self):
         editor = f"{self.editor}" if self.editor else ""
         translator = f"; пер. {self.translator}" if self.translator else ""
-        backslashes = "//" if editor or translator else ""
+        backslashes = "// " if editor or translator else ""
 
         res_transtextual = f"{self.author} ({self.year}) {self.name} " \
-                           f"{backslashes} {editor}{translator}. — " \
+                           f"{backslashes}{editor}{translator}. — " \
                            f"{self.city}: {self.publishing_house}. " \
                            f"— С. {self.pages}."
-        res_subscript = f"{self.author} {self.name} {backslashes} " \
+        res_subscript = f"{self.author} {self.name} {backslashes}" \
                         f"{editor}{translator}. — " \
                         f"{self.city}: {self.publishing_house}, " \
                         f"{self.year}. — С. {self.pages}."
