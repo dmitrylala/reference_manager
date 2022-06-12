@@ -36,6 +36,9 @@ def main():
     )
 
     option = st.selectbox(REFERENCE_INVITE, creator.ref_names)
+
+    st.markdown("""---""")
+
     try:
         st.markdown(creator.process(option), unsafe_allow_html=True)
     except TypeError as e:
