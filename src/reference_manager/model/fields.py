@@ -55,10 +55,11 @@ class Pages(Text):
             if page_start >= page_end:
                 raise ValueError(f"Start page >= end page: {page_start}")
         else:
-            try:
-                int(value.strip())
-            except ValueError:
-                raise ValueError(f"Bad page: {value}")
+            if value != "":
+                try:
+                    int(value.strip())
+                except ValueError:
+                    raise ValueError(f"Bad page: {value}")
 
 
 class Date(Text):

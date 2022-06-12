@@ -150,15 +150,16 @@ class CollectionArticle(Reference):
             setattr(self, field, value)
 
     def __str__(self):
+        pages = f"— С. {self.pages}." if self.pages else ""
         res_transtextual = f"{self.author} ({int(self.year)}) " \
                            f"{self.article_name} // {self.editor} " \
                            f"(Ред.). {self.collection_name}. {self.city}:" \
-                           f" {self.publishing_house}. — С. {self.pages}."
+                           f" {self.publishing_house}. {pages}"
         res_subscript = f"{self.author} " \
                         f"{self.article_name} // {self.editor} " \
                         f"(Ред.). {self.collection_name}. {self.city}:" \
                         f" {self.publishing_house}, {int(self.year)}" \
-                        f". — С. {self.pages}."
+                        f". {pages}"
 
         if self.ref_type == RefType.Transtextual:
             return res_transtextual
@@ -199,12 +200,13 @@ class JournalArticle(Reference):
             setattr(self, field, value)
 
     def __str__(self):
+        pages = f"— С. {self.pages}." if self.pages else ""
         res_transtextual = f"{self.author} ({int(self.year)}) " \
                            f"{self.article_name} // {self.journal_name}." \
-                           f" №{int(self.journal_number)}. — С. {self.pages}."
+                           f" №{int(self.journal_number)}. {pages}"
         res_subscript = f"{self.author} {self.article_name} // " \
                         f"{self.journal_name}, {int(self.year)}. " \
-                        f"№{int(self.journal_number)}. — С. {self.pages}."
+                        f"№{int(self.journal_number)}. {pages}"
 
         if self.ref_type == RefType.Transtextual:
             return res_transtextual
@@ -258,10 +260,11 @@ class TextMultivolume(Reference):
             setattr(self, field, value)
 
     def __str__(self):
+        pages = f"— С. {self.pages}." if self.pages else ""
         res_transtextual = f"{self.author} ({int(self.year)}) {self.text_name} " \
                            f"// {self.multivolume_author} " \
                            f"{self.multivolume_name} {self.city}: " \
-                           f"{self.publishing_house}. — С. {self.pages}. " \
+                           f"{self.publishing_house}. {pages} " \
                            f"Первая публикация: {self.first_publication}."
         res_subscript = "Пока не поддерживается :)"
 
