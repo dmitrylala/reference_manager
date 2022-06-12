@@ -36,7 +36,12 @@ def main():
     )
 
     option = st.selectbox(REFERENCE_INVITE, creator.ref_names)
-    st.markdown(creator.process(option), unsafe_allow_html=True)
+    try:
+        st.markdown(creator.process(option), unsafe_allow_html=True)
+    except TypeError as e:
+        st.error(e)
+    except ValueError as e:
+        st.error(e)
 
 
 if __name__ == '__main__':
