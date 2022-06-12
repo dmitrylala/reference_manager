@@ -83,14 +83,14 @@ class Monography(Reference):
         translator = f"{semicolon}пер. {self.translator}" if self.translator else ""
         backslashes = " // " if editor or translator else ""
 
-        res_transtextual = f"{self.author} ({self.year}) {self.name}" \
+        res_transtextual = f"{self.author} ({int(self.year)}) {self.name}" \
                            f"{backslashes}{editor}{translator}. — " \
                            f"{self.city}: {self.publishing_house}. " \
                            f"— С. {self.pages}."
         res_subscript = f"{self.author} {self.name}{backslashes}" \
                         f"{editor}{translator}. — " \
                         f"{self.city}: {self.publishing_house}, " \
-                        f"{self.year}. — С. {self.pages}."
+                        f"{int(self.year)}. — С. {self.pages}."
 
         if self.ref_type == RefType.Transtextual:
             return res_transtextual
@@ -137,14 +137,14 @@ class CollectionArticle(Reference):
             setattr(self, field, value)
 
     def __str__(self):
-        res_transtextual = f"{self.author} ({self.year}) " \
+        res_transtextual = f"{self.author} ({int(self.year)}) " \
                            f"{self.article_name} // {self.editor} " \
                            f"(Ред.). {self.collection_name}. {self.city}:" \
                            f" {self.publishing_house}. С. {self.pages}."
         res_subscript = f"{self.author} " \
                         f"{self.article_name} // {self.editor} " \
                         f"(Ред.). {self.collection_name}. {self.city}:" \
-                        f" {self.publishing_house}, {self.year}. " \
+                        f" {self.publishing_house}, {int(self.year)}. " \
                         f"С. {self.pages}."
 
         if self.ref_type == RefType.Transtextual:
@@ -186,11 +186,11 @@ class JournalArticle(Reference):
             setattr(self, field, value)
 
     def __str__(self):
-        res_transtextual = f"{self.author} ({self.year}) " \
+        res_transtextual = f"{self.author} ({int(self.year)}) " \
                            f"{self.article_name} // {self.journal_name}." \
                            f" №{self.journal_number}. С. {self.pages}."
         res_subscript = f"{self.author} {self.article_name} // " \
-                        f"{self.journal_name}. {self.year}. " \
+                        f"{self.journal_name}. {int(self.year)}. " \
                         f"№{self.journal_number}. С. {self.pages}."
 
         if self.ref_type == RefType.Transtextual:
@@ -245,7 +245,7 @@ class TextMultivolume(Reference):
             setattr(self, field, value)
 
     def __str__(self):
-        res_transtextual = f"{self.author} ({self.year}) {self.text_name} " \
+        res_transtextual = f"{self.author} ({int(self.year)}) {self.text_name} " \
                            f"// {self.multivolume_author} " \
                            f"{self.multivolume_name} {self.city}: " \
                            f"{self.publishing_house}. С. {self.pages}. " \
