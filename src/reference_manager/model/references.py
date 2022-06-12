@@ -190,7 +190,7 @@ class JournalArticle(Reference):
                            f"{self.article_name} // {self.journal_name}." \
                            f" №{self.journal_number}. — С. {self.pages}."
         res_subscript = f"{self.author} {self.article_name} // " \
-                        f"{self.journal_name}. {int(self.year)}. " \
+                        f"{self.journal_name}, {int(self.year)}. " \
                         f"№{self.journal_number}. — С. {self.pages}."
 
         if self.ref_type == RefType.Transtextual:
