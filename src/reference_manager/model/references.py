@@ -177,6 +177,9 @@ class JournalArticle(Reference):
         FieldInfo("journal_name", "Введите название журнала", str),
         FieldInfo("journal_number", "Введите номер журнала", int),
         FieldInfo("pages", "Введите диапазон страниц (через тире) (опционально)", str),
+        FieldInfo("url", "Введите URL (опционально - отображается только "
+                         "если еще введена дата обращения)", str),
+        FieldInfo("request_date", "Введите дату обращения (опционально)", str),
     )
 
     author = Text()
@@ -185,6 +188,8 @@ class JournalArticle(Reference):
     journal_name = Text()
     journal_number = PositiveNumber()
     pages = Pages()
+    url = Text()
+    request_date = Date()
 
     def __init__(
             self,
@@ -195,6 +200,9 @@ class JournalArticle(Reference):
             journal_name: str = "Вопросы национализма",
             journal_number: int = 5,
             pages: str = "135-155",
+            url: str = "https://www.rbc.ru/newspaper/2022/06/10/"
+                       "62a201e69a79478f6aa4c51c",
+            request_date: str = "12.06.2022",
     ):
         self.ref_type = RefType.Transtextual
         for field, value in filter(lambda x: x[0] != 'self', locals().items()):
@@ -202,12 +210,16 @@ class JournalArticle(Reference):
 
     def __str__(self):
         pages = f"— С. {self.pages}." if self.pages else ""
+        url = ""
+        if self.url and self.request_date:
+            url = f"[Электронный ресурс]. URL: {self.url} " \
+                  f"(дата обращения: {self.request_date})"
         res_transtextual = f"{self.author} ({int(self.year)}) " \
                            f"{self.article_name} // {self.journal_name}." \
-                           f" №{int(self.journal_number)}. {pages}"
+                           f" №{int(self.journal_number)}. {pages}{url}"
         res_subscript = f"{self.author} {self.article_name} // " \
                         f"{self.journal_name}, {int(self.year)}. " \
-                        f"№{int(self.journal_number)}. {pages}"
+                        f"№{int(self.journal_number)}. {pages}{url}"
 
         if self.ref_type == RefType.Transtextual:
             return res_transtextual
