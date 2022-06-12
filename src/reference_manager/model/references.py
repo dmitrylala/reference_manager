@@ -333,7 +333,7 @@ class DigitalArticle(Reference):
 
     def __init__(
             self,
-            author: str = "Инна Деготькова, Маргарита Мордовина.",
+            author: str = "Инна Деготькова, Маргарита Мордовина",
             year: int = 2021,
             article_name: str = "Доходы экспортеров ушли под "
                                 "контроль правительства",
