@@ -32,6 +32,7 @@ def main():
         ref_type=ref_type,
         text_handler=st.text_input,
         number_handler=st.number_input,
+        date_handler=st.date_input,
         ref_styler=reference_styler
     )
 

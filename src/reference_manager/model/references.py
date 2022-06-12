@@ -2,10 +2,14 @@ from __future__ import annotations
 
 from abc import ABC, abstractmethod
 from collections import namedtuple
+from datetime import date
 from enum import Enum
 from typing import Callable
 
-from .fields import Text, PositiveNumber, Date, Pages
+from .fields import Text, PositiveNumber, Pages
+
+
+DATE_FORMAT = "%d.%m.%y"
 
 
 class Reference(ABC):
@@ -53,19 +57,11 @@ class Monography(Reference):
         FieldInfo("pages", "Введите количество страниц/номер страниц (-ы) (опционально)", str),
         FieldInfo("url", "Введите URL (опционально - отображается только "
                          "если еще введена дата обращения)", str),
-        FieldInfo("request_date", "Введите дату обращения (опционально)", str),
+        FieldInfo("request_date", "Введите дату обращения (опционально)", date),
     )
 
-    author = Text()
     year = PositiveNumber()
-    name = Text()
-    editor = Text()
-    translator = Text()
-    city = Text()
-    publishing_house = Text()
     pages = Pages()
-    url = Text()
-    request_date = Date()
 
     def __init__(
             self,
@@ -79,11 +75,19 @@ class Monography(Reference):
             pages: str = "116",
             url: str = "http://www.philosophy.ru/library/bahtin/"
                        "rable.html#_ftn1",
-            request_date: str = "05.10.2008",
+            request_date: date = date.today(),
     ):
+        self.author = author
+        self.year = year
+        self.name = name
+        self.editor = editor
+        self.translator = translator
+        self.city = city
+        self.publishing_house = publishing_house
+        self.pages = pages
+        self.url = url
         self.ref_type = RefType.Transtextual
-        for field, value in filter(lambda x: x[0] != 'self', locals().items()):
-            setattr(self, field, value)
+        self.request_date = request_date
 
     def __str__(self):
         editor = f"{self.editor}" if self.editor else ""
@@ -94,7 +98,7 @@ class Monography(Reference):
         url = ""
         if self.url and self.request_date:
             url = f" [Электронный ресурс]. URL: {self.url} " \
-                  f"(дата обращения: {self.request_date})"
+                  f"(дата обращения: {self.request_date.strftime(DATE_FORMAT)})"
         pages = f"— С. {self.pages}." if self.pages else ""
 
         res_transtextual = f"{self.author} ({int(self.year)}) {self.name}" \
@@ -179,7 +183,7 @@ class JournalArticle(Reference):
         FieldInfo("pages", "Введите диапазон страниц (через тире) (опционально)", str),
         FieldInfo("url", "Введите URL (опционально - отображается только "
                          "если еще введена дата обращения)", str),
-        FieldInfo("request_date", "Введите дату обращения (опционально)", str),
+        FieldInfo("request_date", "Введите дату обращения (опционально)", date),
     )
 
     author = Text()
@@ -189,7 +193,6 @@ class JournalArticle(Reference):
     journal_number = PositiveNumber()
     pages = Pages()
     url = Text()
-    request_date = Date()
 
     def __init__(
             self,
@@ -201,9 +204,10 @@ class JournalArticle(Reference):
             journal_number: int = 5,
             pages: str = "135-155",
             url: str = "https://istina.msu.ru/publications/article/583756/",
-            request_date: str = "12.06.2022",
+            request_date: date = date.today(),
     ):
         self.ref_type = RefType.Transtextual
+        self.request_date = request_date
         for field, value in filter(lambda x: x[0] != 'self', locals().items()):
             setattr(self, field, value)
 
@@ -212,7 +216,7 @@ class JournalArticle(Reference):
         url = ""
         if self.url and self.request_date:
             url = f" [Электронный ресурс]. URL: {self.url} " \
-                  f"(дата обращения: {self.request_date})"
+                  f"(дата обращения: {self.request_date.strftime(DATE_FORMAT)})"
         res_transtextual = f"{self.author} ({int(self.year)}) " \
                            f"{self.article_name} // {self.journal_name}." \
                            f" №{int(self.journal_number)}. {pages}{url}"
@@ -292,13 +296,12 @@ class DigitalLegalAct(Reference):
         FieldInfo("name", "Введите название", str),
         FieldInfo("url", "Введите URL", str),
         FieldInfo("article", "Введите статью", str),
-        FieldInfo("request_date", "Введите дату обращения", str),
+        FieldInfo("request_date", "Введите дату обращения", date),
     )
 
     name = Text()
     url = Text()
     article = Text()
-    request_date = Date()
 
     def __init__(
             self,
@@ -307,8 +310,10 @@ class DigitalLegalAct(Reference):
             url: str = "http://www.consultant.ru/document/cons_doc_LAW_18260/"
                        "fbe9593051ae34e2a8eb27f73b923ffee40296b7/",
             article: str = "ч. 1 ст. 24",
-            request_date: str = "27.03.2019",
+            request_date: date = date.today(),
     ):
+        self.ref_type = RefType.Transtextual
+        self.request_date = request_date
         for field, value in filter(lambda x: x[0] != 'self', locals().items()):
             setattr(self, field, value)
 
@@ -316,7 +321,7 @@ class DigitalLegalAct(Reference):
         res = f"{self.name}"
         comma = ", " if self.article != "" else ""
         res += comma + f"{self.article} // {self.url} " \
-                       f"(дата обращения: {self.request_date})"
+                       f"(дата обращения: {self.request_date.strftime(DATE_FORMAT)})"
         return res
 
 
@@ -330,7 +335,7 @@ class DigitalArticle(Reference):
         FieldInfo("resource_name", "Введите название газеты/портала и т.д.", str),
         FieldInfo("article_number", "Введите номер статьи (опционально)", int),
         FieldInfo("url", "Введите URL", str),
-        FieldInfo("request_date", "Введите дату обращения", str),
+        FieldInfo("request_date", "Введите дату обращения", date),
     )
 
     author = Text()
@@ -339,7 +344,6 @@ class DigitalArticle(Reference):
     resource_name = Text()
     article_number = PositiveNumber()
     url = Text()
-    request_date = Date()
 
     def __init__(
             self,
@@ -351,21 +355,23 @@ class DigitalArticle(Reference):
             article_number: int = 77,
             url: str = "https://www.rbc.ru/newspaper/2022/06/10/"
                        "62a201e69a79478f6aa4c51c",
-            request_date: str = "12.06.2022",
+            request_date: date = date.today(),
     ):
         self.ref_type = RefType.Transtextual
+        self.request_date = request_date
         for field, value in filter(lambda x: x[0] != 'self', locals().items()):
             setattr(self, field, value)
 
     def __str__(self):
         article_num = f" № {self.article_number}." if self.article_number else ""
+        req_date = self.request_date.strftime(DATE_FORMAT)
         res_transtextual = f"{self.author} ({int(self.year)}) " \
                            f"{self.article_name} " \
                            f"// {self.resource_name}.{article_num} " \
-                           f"URL: {self.url} (дата обращения: {self.request_date})"
+                           f"URL: {self.url} (дата обращения: {req_date})"
         res_subscript = f"{self.author}. {self.article_name} " \
                         f"// {self.resource_name}. {int(self.year)}.{article_num} " \
-                        f"URL: {self.url} (дата обращения: {self.request_date})"
+                        f"URL: {self.url} (дата обращения: {req_date})"
 
         if self.ref_type == RefType.Transtextual:
             return res_transtextual
@@ -392,11 +398,14 @@ class ReferenceCreator:
     def __init__(
             self,
             ref_type: str,
-            text_handler: Callable, number_handler: Callable,
+            text_handler: Callable,
+            number_handler: Callable,
+            date_handler: Callable,
             ref_styler=None,
     ):
         self.text_handler = text_handler
         self.number_handler = number_handler
+        self.date_handler = date_handler
         self.ref_styler = ref_styler
         self.ref_type = self.reference_types[ref_type]
 
@@ -409,8 +418,14 @@ class ReferenceCreator:
                     value=getattr(reference, field.name),
                     key=str(i)
                 )
-            else:
+            elif field.type == str:
                 val = self.text_handler(
+                    label=field.invite,
+                    value=getattr(reference, field.name),
+                    key=str(i)
+                )
+            else:
+                val = self.date_handler(
                     label=field.invite,
                     value=getattr(reference, field.name),
                     key=str(i)

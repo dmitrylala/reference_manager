@@ -60,29 +60,3 @@ class Pages(Text):
                     int(value.strip())
                 except ValueError:
                     raise ValueError(f"Bad page: {value}")
-
-
-class Date(Text):
-    def validate(self, value):
-        super().validate(value)
-
-        sep = '.'
-
-        count_dots = value.count(sep)
-        if count_dots != 2:
-            raise ValueError(f"Number of symbols {sep} "
-                             f"doesn't equal to 2: {count_dots}")
-
-        try:
-            day, month, year = map(int, map(str.strip, value.split(sep)))
-        except ValueError:
-            raise ValueError(f"Bad date: {value}")
-
-        if day not in range(1, 32):
-            raise ValueError(f"day is not from 1 to 31: {day}")
-
-        if month not in range(1, 13):
-            raise ValueError(f"month is not from 1 to 12: {month}")
-
-        if year <= 0:
-            raise ValueError(f"Bad year: {year}")
