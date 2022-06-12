@@ -5,7 +5,7 @@ from collections import namedtuple
 from enum import Enum
 from typing import Callable
 
-from .fields import Text, Number, Year, Date, Pages
+from .fields import Text, PositiveNumber, Date, Pages
 
 
 class Reference(ABC):
@@ -54,7 +54,7 @@ class Monography(Reference):
     )
 
     author = Text()
-    year = Year()
+    year = PositiveNumber()
     name = Text()
     editor = Text()
     translator = Text()
@@ -112,7 +112,7 @@ class CollectionArticle(Reference):
     )
 
     author = Text()
-    year = Year()
+    year = PositiveNumber()
     article_name = Text()
     editor = Text()
     collection_name = Text()
@@ -165,10 +165,10 @@ class JournalArticle(Reference):
     )
 
     author = Text()
-    year = Year()
+    year = PositiveNumber()
     article_name = Text()
     journal_name = Text()
-    journal_number = Number()
+    journal_number = PositiveNumber()
     pages = Pages()
 
     def __init__(
@@ -188,10 +188,10 @@ class JournalArticle(Reference):
     def __str__(self):
         res_transtextual = f"{self.author} ({int(self.year)}) " \
                            f"{self.article_name} // {self.journal_name}." \
-                           f" №{self.journal_number}. — С. {self.pages}."
+                           f" №{int(self.journal_number)}. — С. {self.pages}."
         res_subscript = f"{self.author} {self.article_name} // " \
                         f"{self.journal_name}, {int(self.year)}. " \
-                        f"№{self.journal_number}. — С. {self.pages}."
+                        f"№{int(self.journal_number)}. — С. {self.pages}."
 
         if self.ref_type == RefType.Transtextual:
             return res_transtextual
@@ -217,7 +217,7 @@ class TextMultivolume(Reference):
     )
 
     author = Text()
-    year = Year()
+    year = PositiveNumber()
     text_name = Text()
     multivolume_author = Text()
     multivolume_name = Text()

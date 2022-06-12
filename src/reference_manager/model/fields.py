@@ -26,11 +26,11 @@ class Number(Validator):
             raise TypeError(f"Not an integer: {value}")
 
 
-class Year(Number):
+class PositiveNumber(Number):
     def validate(self, value):
         super().validate(value)
         if value <= 0:
-            raise ValueError(f"Not a year: {value}")
+            raise ValueError(f"Not a positive number: {value}")
 
 
 class Text(Validator):
@@ -85,6 +85,3 @@ class Date(Text):
 
         if year <= 0:
             raise ValueError(f"Bad year: {year}")
-
-
-
